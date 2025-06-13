@@ -1,53 +1,70 @@
-
 # 📧 Email Consent Manager
 
-A small tool that sends consent request emails and tracks responses.
+A lightweight tool to manage email consent by sending request emails and tracking user responses.
 
 ## ✅ Features
-- Sends emails with YES/NO links
-- Tracks and stores recipient responses
-- SQLite database backend
-- Minimal response tracking web endpoint
-- Simple protection against multiple submissions (e.g., per IP/email)
+- 📩 Sends consent request emails with **YES/NO** links  
+- 🗂️ Tracks and stores recipient responses  
+- 💾 Uses SQLite as the backend database  
+- 🌐 Minimal web endpoint for response tracking  
+- 🔐 Prevents multiple submissions by IP or email
 
-## 📂 Setup Instructions
-1. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## ⚙️ Setup Instructions
 
-2. To Generate a Gmail App Password, Follow These Precise Steps:
-📌 Make sure 2-Step Verification is already turned ON, which it seems like you’ve done since you're seeing "Authenticator" and "Google prompt."
+### 1. Install Required Dependencies
+```bash
+pip install -r requirements.txt
+```
 
-🔐 Step-by-Step: Generate Gmail App Password
- Open this link directly:
-👉 https://myaccount.google.com/apppasswords
+### 2. Configure Gmail for Sending Emails
 
-(You may need to log in again.)
+To send emails securely using your Gmail account:
 
- 
-3.Edit your Gmail credentials in `utils.py`.
-Add your Gmail credentials **securely**:
-   - Open `utils.py` or wherever your email credentials are used.
-   - Replace with your Gmail address and app password (never use your real password):
-     ```python
-     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-         server.login("your_email@gmail.com", "your_app_password")
-         server.sendmail("your_email@gmail.com", email, message.as_string())
-     ```
+#### 📌 Requirements:
+- Make sure **2-Step Verification** is enabled on your Gmail account.
 
-4. Run the app:
-   ```bash
-   python app.py
-   ```
+#### 🔐 Generate a Gmail App Password:
+1. Visit: 👉 https://myaccount.google.com/apppasswords
+2. Sign in if prompted.
+3. Select “Mail” as the app and “Other” (custom name) as the device (e.g., `EmailConsentApp`).
+4. Click **Generate** and copy the 16-character app password.
 
-5. Send emails by visiting:
-   ```
-   http://localhost:5000/send
-   ```
+### 3. Add Your Gmail Credentials
 
-## 💾 Stored Format
+Open the file `utils.py` (or wherever your email credentials are stored), and replace the login credentials:
+```python
+with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+    server.login("your_email@gmail.com", "your_app_password")
+    server.sendmail("your_email@gmail.com", email, message.as_string())
+```
 
+> ⚠️ **Never** upload this file to GitHub with real credentials.
+
+### 4. Add Recipient Emails
+
+Create or edit `emails.csv` with the following format:
+
+**emails.csv**
+```
+email
+tayfasaltik@gmail.com
+redforwhite@gmail.com
+```
+
+### 5. Run the Application
+```bash
+python app.py
+```
+
+### 6. Trigger Email Sending
+Visit the following URL in your browser to send consent emails:
+```
+http://localhost:5000/send
+```
+
+## 💾 Response Storage Format
+
+Responses are saved in the SQLite database with the following structure:
 ```json
 {
   "email": "john@example.com",
@@ -58,6 +75,9 @@ Add your Gmail credentials **securely**:
 }
 ```
 
-## 📤 Export
-Visit `http://localhost:5000/export` to download responses as exel.
+## 📤 Exporting Responses
 
+To download all recorded responses in Excel format, visit:
+```
+http://localhost:5000/export
+```
